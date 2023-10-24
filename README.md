@@ -203,7 +203,7 @@ https://speakerdeck.com/hpprc/zi-yuan-tositejian-rushi-yan-puroguramu
 
 https://www.slideshare.net/cvpaperchallenge/tips-ver2-250474910
 
-
+https://tech-blog.abeja.asia/entry/container-enironment-202310
 
 
 # やること
