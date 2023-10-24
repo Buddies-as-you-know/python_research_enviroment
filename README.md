@@ -4,6 +4,7 @@
 https://qiita.com/takamii228/items/80c0996a0b5fa39337bd
 # 開発環境
 計算機(実際にプログラムを動かすマシン)のOS：Ubuntu
+
 コードエディタ：VS Code
 # ssh接続
 ## github
