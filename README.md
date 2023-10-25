@@ -1,4 +1,10 @@
 # とりあえずすぐ始める方法
+git clone して
+```
+rm -rf .git
+poetry shell
+```
+# 手を動かしたい場合
 ## 1.pythonのインストール
 ここではpyenvを使用して指定のバージョンのpythonを入れる方法を紹介します。
 ```bash
