@@ -1,8 +1,8 @@
 # とりあえずすぐ始める方法
 git clone して
 ```
-rm -rf .git
-poetry shell
+rm -rf .git (gitを削除して新たにgitを作成)
+poetry shell (仮想環境に入る)
 ```
 # 手を動かしたい場合
 ## 1.pythonのインストール
