@@ -1,4 +1,164 @@
 # とりあえずすぐ始める方法
+## 1.pythonのインストール
+ここではpyenvを使用して指定のバージョンのpythonを入れる方法を紹介します。
+```bash
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(pyenv init --path)"' >> ~/.bashrc
+# pyenvでインストールできるpythonバージョンを更新するために必要
+git clone https://github.com/pyenv/pyenv-update.git $(pyenv root)/plugins/pyenv-update
+pyenv update
+# pyenv-updateを入れなくても、以下のコマンドでできます。
+cd ~/.pyenv && git fetch && git pull
+pyenv local <python-version>
+pyenv global <python-version>
+```
+これでpythonの指定のバージョンを入れることができます。
+## 2.poetryのインストール
+```bash
+#公式のインストーラーを使用してインストール
+curl -sSL https://install.python-poetry.org | python3 -  
+#pathを設定。$HOMEのところをは適宜書き換える。上記インストールのときの出力に実行コマンドが書かれている。例：Add `export PATH="/home/username/.local/bin:$PATH"` to your shell configuration file.
+echo PATH="$HOME/.local/bin:$PATH" >> ~/.bashrc 
+#poetryで作る仮想環境をプロジェクト直下に生成するようにする。その他の設定はpoetry config --listで見れる
+poetry config virtualenvs.in-project true 
+```
+# ディレクトリの作成、python環境の構築
+```bash
+# ディレクトリ作成
+mkdir python-demo
+cd python-demo
+# pythonバージョンのインストールとそのディレクトリで使用するpythonバージョンの指定
+pyenv install 3.11.0
+pyenv local 3.11.0
+# 仮想環境の構築
+python -m venv .venv
+# poetryの初期設定
+poetry init
+# ライブラリの追加
+poetry add <package> # プログラムの動作に必要なパッケージの追加
+# poetry addで対応できないパッケージはpyproject.tomlに記述して以下のコマンドを打つ
+poetry update
+# sample.pyというプログラムを書いたら、以下のコマンドで実行
+poetry run python sample.py
+```
+これでpythonの環境構築ができました。
+## 静的解析、自動整形ツールのインストール
+```bash
+poetry add --group dev flake8 pyproject-flake8==6.0.4 flake8-isort flake8-bugbear flake8-builtins flake8-eradicate flake8-unused-arguments flake8-pytest-style pep8-naming mypy black isort ruff
+```
+pyproject.tomlの中に下記を追加
+```pyproject.toml
+
+[tool.ruff]
+target-version = "py38"
+line-length = 100
+select = [
+  "E", # pycodestyle errors
+  "W", # pycodestyle warnings
+  "F", # pyflakes
+  "B", # flake8-bugbear
+  "I", # isort
+]
+
+ignore = [
+  "E501", # line too long, handled by black
+  "B008", # do not perform function calls in argument defaults
+]
+
+unfixable = [
+  "F401", # module imported but unused
+  "F841", # local variable is assigned to but never used
+]
+[tool.mypy]
+# エラー時のメッセージを詳細表示
+show_error_context = true
+# エラー発生箇所の行数/列数を表示
+show_column_numbers = true
+# import 先のチェックを行わない (デフォルトだとサードパーティーライブラリまでチェックする)
+ignore_missing_imports = true
+# 関数定義の引数/戻り値に型アノテーション必須
+disallow_untyped_defs = true
+# デフォルト引数に None を取る場合型アノテーションに Optional 必須
+no_implicit_optional = true
+# 戻り値が Any 型ではない関数の戻り値の型アノテーションが Any のとき警告
+warn_return_any = true
+# mypy エラーに該当しない箇所に `# type: ignore` コメントが付与されていたら警告
+# ※ `# type: ignore` が付与されている箇所は mypy のエラーを無視出来る
+warn_unused_ignores = true
+# 冗長なキャストに警告
+warn_redundant_casts = true
+
+[tool.black]
+line-length = 79
+
+[tool.isort]
+profile = "black"
+line_length = 79
+# 各ライブラリ群の説明を追記する
+import_heading_stdlib      = "Standard Library"
+import_heading_thirdparty  = "Third Party Library"
+import_heading_firstparty  = "First Party Library"
+import_heading_localfolder = "Local Library"
+# from third_party import lib1, lib2...のような記述時の改行方法の設定(https://pycqa.github.io/isort/docs/configuration/multi_line_output_modes.html)
+multi_line_output = 3
+# 最後の要素の末尾に","を付けるようにする設定
+include_trailing_comma = true
+
+[tool.flake8]
+max-line-length = 79
+# E203: ":"の前の空白を入れないルール
+# W503: 演算子の前に改行しないようにするルール
+extend-ignore = ["E203", "W503"]
+exclude = [".venv", ".git", "__pycache__",]
+max-complexity = 10
+```
+vscodeでCtrl+,を開きsetting.jsonから
+```setting.json
+    "[python]": {
+        // タブサイズは 4
+        "editor.tabSize": 4,
+        // ファイル保存時にフォーマット
+        "editor.formatOnSave": true
+    },
+    // tests ディレクトリから src ディレクトリのモジュールをインポートするときの vscode 上でモジュールが見つからないエラー防止
+    "python.analysis.extraPaths": [
+        "./src"
+    ],
+    // .venv 内の python を使用
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    // フォーマッターは black を使用
+    "python.formatting.provider": "black",
+    "python.formatting.blackPath": "${workspaceFolder}/.venv/bin/black",
+    "python.sortImports.path": "${workspaceFolder}/.venv/bin/isort",
+    // リンターに flake8 と mypy を使用
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [
+        "--ignore=E203, W503",
+	// E203: ":"の前の空白を入れないルール
+	// W503: 演算子の前に改行しないようにするルール
+	"--max-complexity=10",
+    ],
+    "python.linting.flake8Path": "${workspaceFolder}/.venv/bin/flake8",
+    "python.linting.mypyEnabled": true,
+    "python.linting.mypyPath": "${workspaceFolder}/.venv/bin/mypy",
+    // docstring は nympy スタイル (ここは完全好みです)
+    "autoDocstring.docstringFormat": "numpy",
+```
+## dockerfileとdocker-compose
+これらはこちらのgithubからコピペ推奨
+## ディレクトリの構成
+こちらも自由ですが書きを参照してください。
+
+## ハードコーディングをさせるために
+config.pyのdataclassをしようしてましょう。
+
+
+
+
+
 # 改善
 もっと上手い人がいた場合、改善をお願いします。
 ## pullrequestの出し方

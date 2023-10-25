@@ -8,6 +8,7 @@ delete:
 	docker system prune --volumes -f
 
 lint:
+	poetry run ruff src
 	poetry run pflake8 src
 	poetry run isort --check --diff src
 	poetry run black --check src
