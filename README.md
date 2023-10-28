@@ -379,6 +379,6 @@ https://tech-blog.abeja.asia/entry/container-enironment-202310
 - [x] Makefileの作成
 - [x] dockerの構成
 - [x] ディレクトリ構成
-- [ ] Pythonデバッグ
-- [x] 実験設定の管理[ハードコーディングを避ける]
+- [ ] Pythonデバッグ (https://buildersbox.corp-sansan.com/entry/2023/10/25/110000)
+- [x] 実験設定の管理[ハードコーディングを避ける] 
 - [ ] [WIP]適切なログの出力 ~printからの脱却~
