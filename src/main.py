@@ -9,18 +9,10 @@ import yaml
 # First Party Library
 from config import config
 
-
+"""
 def run(configs: config.Config = None, save_dir: str = "") -> None:
-    """_summary_
-
-    Parameters
-    ----------
-    configs : config.Config, optional
-        _description_, by default None
-    save_dir : str, optional
-        _description_, by default ""
-    """
     return
+"""
 
 
 def main() -> None:
@@ -30,7 +22,7 @@ def main() -> None:
     with open(config_path, "r") as yf:
         yaml_data = yaml.safe_load(yf)
     try:
-        configs_value = config.get_config(config_path)
+        _ = config.get_config(config_path)
     except FileNotFoundError:
         print(f"Config file not found: {config_path}")
     except ValueError as e:
@@ -48,7 +40,7 @@ def main() -> None:
             yf,
             default_flow_style=False,
         )
-    run(configs_value, logdir)
+    # run(configs_value, logdir) 自分が実行したい関数によって適宜追加
 
 
 if __name__ == "__main__":
