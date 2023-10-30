@@ -8,13 +8,14 @@ delete:
 	docker system prune --volumes -f
 
 lint:
-	poetry run ruff src
+	poetry run ruff .
 	poetry run pflake8 src
-	poetry run isort --check --diff src
-	poetry run black --check src
-	poetry run mypy src
+	poetry run isort --check --diff .
+	poetry run black --check .
+	poetry run mypy .
 
 format:
-	poetry run isort src
-	poetry run black src
+	poetry run isort .
+	poetry run black .
+	poetry run ruff --fix .
 

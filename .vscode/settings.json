@@ -3,7 +3,8 @@
         // タブサイズは 4
         "editor.tabSize": 4,
         // ファイル保存時にフォーマット
-        "editor.formatOnSave": true
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "ms-python.black-formatter"
     },
     // tests ディレクトリから src ディレクトリのモジュールをインポートするときの vscode 上でモジュールが見つからないエラー防止
     "python.analysis.extraPaths": [
@@ -12,7 +13,7 @@
     // .venv 内の python を使用
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     // フォーマッターは black を使用
-    "python.formatting.provider": "black",
+    "python.formatting.provider": "none",
     "python.formatting.blackPath": "${workspaceFolder}/.venv/bin/black",
     "python.sortImports.path": "${workspaceFolder}/.venv/bin/isort",
     // リンターに flake8 と mypy を使用
@@ -29,4 +30,7 @@
     "python.linting.mypyPath": "${workspaceFolder}/.venv/bin/mypy",
     // docstring は nympy スタイル (ここは完全好みです)
     "autoDocstring.docstringFormat": "numpy",
+    "markdownlint.config": {
+        "MD045": false
+      },
 }
