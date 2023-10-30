@@ -214,6 +214,7 @@ dataclassの[参考資料](https://docs.python.org/ja/3.11/library/dataclasses.h
 - [x] Makefileの作成
 - [x] dockerの構成
 - [x] ディレクトリ構成
+- [ ] github actionの追加
 - [ ] Pythonデバッグ ([参考](https://buildersbox.corp-sansan.com/entry/2023/10/25/110000))
 - [x] 実験設定の管理[ハードコーディングを避ける]
-- [ ] [WIP]適切なログの出力 ~printからの脱却~
+- [ ] [WIP]適切なログの出力 ~printからの脱却~[ドキュメント](https://docs.python.org/ja/3/howto/logging.html)
