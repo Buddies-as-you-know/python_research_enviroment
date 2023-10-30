@@ -11,7 +11,7 @@ jobs:
     - name: Set up Python 3.10.0
       uses: actions/setup-python@v2
       with:
-        python-version: python-3.10.0-alpha.4-linux-16.04-x64.tar.gz
+        python-version: 3.10  # Adjusted this line
     - name: Install Poetry
       run: |
         curl -sSL https://install.python-poetry.org | python3 -
@@ -30,3 +30,4 @@ jobs:
         poetry run isort --check --diff .
         poetry run black --check .
         poetry run mypy .
+
